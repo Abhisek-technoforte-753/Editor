@@ -1,0 +1,294 @@
+// MenuBar.tsx
+import React, { useRef, useState } from 'react'
+import {
+  Bold,
+  Italic,
+  Strikethrough,
+  Code,
+  Type,
+  List,
+  ListOrdered,
+  Quote,
+  Undo,
+  Redo,
+  Eraser,
+  Minus,
+  Highlighter,
+  TableIcon,
+  ImageIcon,
+} from 'lucide-react' // make sure you have lucide-react installed
+import { TableGridSelector } from './TableGridSelector' // your custom table grid selector component
+
+export const MenuBar = ({ editor }) => {
+  const [showTableGrid, setShowTableGrid] = useState(false)
+  const fileInputRef = useRef(null)
+
+  if (!editor) {
+    return null
+  }
+
+
+  const insertTable = (rows, cols) => {
+    editor.chain().focus().insertTable({ rows, cols, withHeaderRow: true }).run()
+    setShowTableGrid(false)
+  }
+
+  const onFileChange = (event) => {
+    const file = event.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (readerEvent) => {
+        const base64 = readerEvent.target.result
+        editor.chain().focus().setImage({ src: base64 }).run()
+      }
+      reader.readAsDataURL(file)
+    }
+    // Reset input value to allow re-uploading same file if needed
+    event.target.value = null
+  }
+
+  // Trigger file input click
+  const onClickImageButton = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
+    }
+  }
+  return (
+    <div
+      className="control-group"
+      style={{
+        padding: '10px',
+        border: '1px solid #ccc',
+        backgroundColor: '#fff',
+        marginBottom: '16px',
+        borderRadius: '6px',
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '8px',
+      }}
+    >
+      <button
+        onClick={() => editor.chain().focus().toggleBold().run()}
+        className={editor.isActive('bold') ? 'is-active' : ''}
+        type="button"
+        aria-label="Toggle Bold"
+      >
+        <Bold size={16} />
+      </button>
+      <button onClick={() => {
+        alert('This feature is not implemented yet.')
+        // editor.chain().focus().insertContent({
+        //   type: 'flowchart',
+        //   attrs: { code: 'graph TD;\nA-->B;' },
+        // }).run()
+      }}>
+        Flowchart
+      </button>
+      {/* Shape insertion buttons */}
+      {/* <button onClick={() => editor.chain().focus().insertShape('rectangle', 'Rectangle').run()} type="button">
+        🟥 
+      </button>
+      <button onClick={() => editor.chain().focus().insertShape('circle', 'Circle').run()} type="button">
+        ⭕
+      </button>
+      <button onClick={() => editor.chain().focus().insertShape('triangle', 'Triangle').run()} type="button">
+        🔺
+      </button> */}
+      <button onClick={() => editor.commands.insertShape('rectangle')}>Rectangle</button>
+<button onClick={() => editor.commands.insertShape('circle')}>Circle</button>
+<button onClick={() => editor.commands.insertShape('triangle')}>Triangle</button>
+<button onClick={() => editor.commands.insertShape('oval')}>Oval</button>
+<button onClick={() => editor.chain().focus().insertShape('diamond').run()}>
+  Add Diamond
+</button>
+
+<button onClick={() => editor.commands.insertShape('parallelogram')}>Parallelogram</button>
+
+      <button onClick={() => editor
+        .chain()
+        .focus()
+        .insertLine({
+          x: 100,
+          y: 100,
+          length: 200,
+          angle: 30,
+          strokeWidth: 2,
+          strokeColor: 'black',
+        })
+        .run()
+      } type="button">
+        ➖ 
+      </button>
+   
+
+
+      <button
+        onClick={onClickImageButton}
+        type="button"
+        aria-label="Insert Image"
+      >
+        <ImageIcon size={16} />
+      </button>
+
+      {/* Hidden file input */}
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={onFileChange}
+      />
+
+      <button
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+        className={editor.isActive('italic') ? 'is-active' : ''}
+        type="button"
+        aria-label="Toggle Italic"
+      >
+        <Italic size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().toggleStrike().run()}
+        className={editor.isActive('strike') ? 'is-active' : ''}
+        type="button"
+        aria-label="Toggle Strikethrough"
+      >
+        <Strikethrough size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().toggleCode().run()}
+        className={editor.isActive('code') ? 'is-active' : ''}
+        type="button"
+        aria-label="Toggle Code"
+      >
+        <Code size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().unsetAllMarks().run()}
+        type="button"
+        aria-label="Clear Marks"
+      >
+        <Eraser size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().clearNodes().run()}
+        type="button"
+        aria-label="Clear Nodes"
+      >
+        <Eraser size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+        className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
+        type="button"
+        aria-label="Heading 1"
+      >
+        H1
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
+        type="button"
+        aria-label="Heading 2"
+      >
+        H2
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        className={editor.isActive('bulletList') ? 'is-active' : ''}
+        type="button"
+        aria-label="Bullet List"
+      >
+        <List size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        className={editor.isActive('orderedList') ? 'is-active' : ''}
+        type="button"
+        aria-label="Ordered List"
+      >
+        <ListOrdered size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        className={editor.isActive('blockquote') ? 'is-active' : ''}
+        type="button"
+        aria-label="Blockquote"
+      >
+        <Quote size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+        type="button"
+        aria-label="Horizontal Rule"
+      >
+        <Minus size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().undo().run()}
+        disabled={!editor.can().chain().focus().undo().run()}
+        type="button"
+        aria-label="Undo"
+      >
+        <Undo size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().redo().run()}
+        disabled={!editor.can().chain().focus().redo().run()}
+        type="button"
+        aria-label="Redo"
+      >
+        <Redo size={16} />
+      </button>
+
+      <button
+        onClick={() => editor.chain().focus().setColor('#958DF1').run()}
+        className={editor.isActive('textStyle', { color: '#958DF1' }) ? 'is-active' : ''}
+        type="button"
+        aria-label="Highlight Purple"
+      >
+        <Highlighter size={16} /> Purple
+      </button>
+
+      {/* Table Insert Dropdown */}
+      <div style={{ position: 'relative' }}>
+        <button
+          onClick={() => setShowTableGrid((prev) => !prev)}
+          type="button"
+          aria-label="Insert Table"
+        >
+          <TableIcon size={16} />
+        </button>
+
+        {showTableGrid && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '36px',
+              left: 0,
+              zIndex: 10,
+              background: '#fff',
+              padding: 6,
+              border: '1px solid #ccc',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+            }}
+          >
+            <TableGridSelector onSelect={insertTable} />
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
