@@ -18,7 +18,7 @@ import { MenuBar } from './Menubar'
 import './styles.css'
 import  Shape  from './Shape.jsx'
 import Line from './Line.jsx'
-
+import ExportImport from './ExportImport'
 
 // import { FlowChartNodeData } from '../extensions/FlowChartNodeData'
 
@@ -53,6 +53,7 @@ const Tiptap = () => {
     <div className="editor-viewport">
       <div className="editor-menu">
         <MenuBar editor={editor} />
+          {editor && <ExportImport editor={editor} />}
       </div>
 
       <div id="editor-page" className="editor-page">

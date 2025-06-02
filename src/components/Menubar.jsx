@@ -1,5 +1,6 @@
 // MenuBar.tsx
 import React, { useRef, useState } from 'react'
+import Modal from 'react-modal'
 import {
   Bold,
   Italic,
@@ -16,11 +17,14 @@ import {
   Highlighter,
   TableIcon,
   ImageIcon,
+  Shapes,
 } from 'lucide-react' // make sure you have lucide-react installed
 import { TableGridSelector } from './TableGridSelector' // your custom table grid selector component
 
 export const MenuBar = ({ editor }) => {
   const [showTableGrid, setShowTableGrid] = useState(false)
+     const [showShapeDropdown, setShowShapeDropdown] = useState(false)
+
   const fileInputRef = useRef(null)
 
   if (!editor) {
@@ -52,6 +56,11 @@ export const MenuBar = ({ editor }) => {
     if (fileInputRef.current) {
       fileInputRef.current.click()
     }
+  }
+
+   const insertShape = (type, label) => {
+    editor.chain().focus().insertShape(type, label).run()
+    setShowShapeDropdown(false)
   }
   return (
     <div
@@ -86,23 +95,68 @@ export const MenuBar = ({ editor }) => {
       </button>
       {/* Shape insertion buttons */}
       {/* <button onClick={() => editor.chain().focus().insertShape('rectangle', 'Rectangle').run()} type="button">
-        🟥 
+        🟥
       </button>
       <button onClick={() => editor.chain().focus().insertShape('circle', 'Circle').run()} type="button">
         ⭕
       </button>
       <button onClick={() => editor.chain().focus().insertShape('triangle', 'Triangle').run()} type="button">
         🔺
-      </button> */}
-      <button onClick={() => editor.commands.insertShape('rectangle')}>Rectangle</button>
-<button onClick={() => editor.commands.insertShape('circle')}>Circle</button>
-<button onClick={() => editor.commands.insertShape('triangle')}>Triangle</button>
-<button onClick={() => editor.commands.insertShape('oval')}>Oval</button>
-<button onClick={() => editor.chain().focus().insertShape('diamond').run()}>
-  Add Diamond
-</button>
+      </button>
+      <button onClick={() => editor.chain().focus().insertShape('parallelogram', 'Parallelogram').run()} type="button">▰</button>
+      <button onClick={() => editor.chain().focus().insertShape('terminator', 'Terminator').run()} type="button">🛑</button>
+      <button onClick={() => editor.chain().focus().insertShape('decision', 'Decision').run()} type="button">🔷</button> */}
 
-<button onClick={() => editor.commands.insertShape('parallelogram')}>Parallelogram</button>
+  {/* Shape Modal Trigger */}
+      <div
+      className="control-group"
+      style={{
+        padding: '10px',
+        border: '1px solid #ccc',
+        backgroundColor: '#fff',
+        marginBottom: '16px',
+        borderRadius: '6px',
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '8px',
+        position: 'relative',
+      }}
+    >
+     
+
+      {/* Shape dropdown trigger */}
+      <div >
+        <button onClick={() => setShowShapeDropdown(prev => !prev)} type="button">
+          <Shapes size={18} /> Shape
+        </button>
+
+        {showShapeDropdown && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '40px',
+              left: 0,
+              background: '#fff',
+              border: '1px solid #ccc',
+              borderRadius: '6px',
+              padding: '10px',
+              zIndex: 1000,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            }}
+          >
+            <button onClick={() => insertShape('rectangle', 'Rectangle')}>🟥 Rectangle</button>
+            <button onClick={() => insertShape('circle', 'Circle')}>⭕ Circle</button>
+            <button onClick={() => insertShape('triangle', 'Triangle')}>🔺 Triangle</button>
+            <button onClick={() => insertShape('parallelogram', 'Parallelogram')}>▰ Parallelogram</button>
+            <button onClick={() => insertShape('terminator', 'Terminator')}>🛑 Terminator</button>
+            <button onClick={() => insertShape('decision', 'Decision')}>🔷 Decision</button>
+          </div>
+        )}
+      </div>
+    </div>
 
       <button onClick={() => editor
         .chain()
@@ -117,9 +171,9 @@ export const MenuBar = ({ editor }) => {
         })
         .run()
       } type="button">
-        ➖ 
+        ➖
       </button>
-   
+
 
 
       <button

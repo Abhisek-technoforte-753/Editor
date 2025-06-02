@@ -17,8 +17,7 @@ export const ShapeComponent = ({ node, updateAttributes }) => {
   const shapeStyles = {
     rectangle: {
       backgroundColor: '#4A90E2',
-      borderRadius: 8,
-    },
+     },
     circle: {
       backgroundColor: '#7ED321',
       borderRadius: '50%',
@@ -32,36 +31,33 @@ export const ShapeComponent = ({ node, updateAttributes }) => {
       backgroundColor: 'transparent',
       borderRadius: 0,
     },
-     oval: {
-    backgroundColor: '#F5A623',
-    borderRadius: '50%',
-    width: '100%',
-    height: '100%',
-  },
-  decision: {
-  backgroundColor: '#B620E0',
-  transform: 'rotate(45deg)',
-  transformOrigin: 'center',
-  width: '100%',
-  height: '100%',
-  display: 'inline-block',
-  userSelect: 'none',
-},
+    parallelogram: {
+      backgroundColor: '#50E3C2',
+      transform: 'skew(20deg)',
+      width: '100%',
+      height: '100%',
+    },
 
-terminator: {
-  backgroundColor: '#F8E71C',
-  borderRadius: '50px', // creates a rounded rectangle
-  width: '100%',
-  height: '100%',
-  display: 'inline-block',
-  userSelect: 'none',
-},
-  parallelogram: {
-    backgroundColor: '#50E3C2',
-    transform: 'skew(20deg)',
-    width: '100%',
-    height: '100%',
-  },
+    terminator: {
+      backgroundColor: '#F8E71C',
+      borderRadius: '50px', // rounded rectangle
+      width: '100%',
+      height: '100%',
+      display: 'inline-block',
+      userSelect: 'none',
+    },
+
+    decision: {
+      backgroundColor: '#B620E0',
+      transform: 'rotate(45deg)',
+      transformOrigin: 'center',
+      width: '100%',
+      height: '100%',
+      display: 'inline-block',
+      userSelect: 'none',
+    },
+
+
   }
 
   return (
@@ -74,14 +70,24 @@ terminator: {
         onDragStop={(e, d) => {
           updateAttributes({ x: d.x, y: d.y })
         }}
+      
         onResizeStop={(e, direction, ref, delta, position) => {
-          updateAttributes({
-            width: ref.offsetWidth,
-            height: ref.offsetHeight,
+          let newWidth = ref.offsetWidth
+          let newHeight = ref.offsetHeight
+
+          if (shapeType === 'decision') {
+            const maxSize = Math.max(newWidth, newHeight)
+            newWidth = maxSize
+            newHeight = maxSize
+          }
+         updateAttributes({
+            width: newWidth,
+            height: newHeight,
             x: position.x,
             y: position.y,
           })
         }}
+
         bounds="#editor-page" // Shared canvas container
         enableResizing={allowResize}
         dragHandleClassName="shape-drag-handle"

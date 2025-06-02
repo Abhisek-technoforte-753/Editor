@@ -32,18 +32,26 @@ const Shape = Node.create({
     return ReactNodeViewRenderer(ShapeComponent)
   },
 
-  addCommands() {
-    return {
-      insertShape:
-        (shapeType = 'rectangle', content = 'Shape') =>
-        ({ commands }) => {
-          return commands.insertContent({
-            type: this.name,
-            attrs: { shapeType, content },
-          })
-        },
-    }
-  },
+addCommands() {
+  return {
+    insertShape:
+      (shapeType = 'rectangle', content = 'Shape') =>
+      ({ commands }) => {
+        let attrs = { shapeType, content };
+
+        // Set smaller default size for 'decision' shape
+        if (shapeType === 'decision') {
+          attrs.width = 60;
+          attrs.height = 60;
+        }
+
+        return commands.insertContent({
+          type: this.name,
+          attrs,
+        });
+      },
+  }
+},
 })
 
 export default Shape
