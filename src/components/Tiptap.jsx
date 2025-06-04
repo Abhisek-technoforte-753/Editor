@@ -18,12 +18,17 @@ import { MenuBar } from './Menubar'
 import './styles.css'
 import  Shape  from './Shape.jsx'
 import Line from './Line.jsx'
-import ExportImport from './ExportImport'
+// import ExportImport from './ExportImport'
+import ExportToWord from './ExportToWord.jsx'
+import ExportToPdf from './ExportToPdf.jsx'
+import SaveLoadControls from './EditorStorageHandler.jsx'
 
 // import { FlowChartNodeData } from '../extensions/FlowChartNodeData'
 
 
 const Tiptap = () => {
+  const savedJSON = localStorage.getItem('tiptap-doc')
+
   const editor = useEditor({
     extensions: [
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -46,18 +51,23 @@ const Tiptap = () => {
    
    
     ],
-    content: `<p>Hello Tiptap!</p>`,
+    // content: `<p>Hello Tiptap!</p>`,
+    content: savedJSON ? JSON.parse(savedJSON) : '<p>Hello Tiptap!</p>',
   })
 
   return (
     <div className="editor-viewport">
       <div className="editor-menu">
         <MenuBar editor={editor} />
-          {editor && <ExportImport editor={editor} />}
+        <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+           {editor && <ExportToPdf  />}
+           {editor && <ExportToWord editor={editor} />}
+           {editor && <SaveLoadControls editor={editor} />}
+        </div>
+        
       </div>
 
       <div id="editor-page" className="editor-page">
-       
         <EditorContent
          editor={editor}
          

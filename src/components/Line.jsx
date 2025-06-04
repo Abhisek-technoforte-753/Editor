@@ -30,30 +30,63 @@ const Line = Node.create({
     return ReactNodeViewRenderer(LineComponent)
   },
 
-  addCommands() {
-    return {
-      insertLine:
-        (attrs = {}) =>
-        ({ commands }) => {
-          const defaultAttrs = {
-            x: 100,
-            y: 100,
-            length: 150,
-            angle: 0,
-            strokeWidth: 2,
-            strokeColor: '#000',
-          }
+  // addCommands() {
+  //   return {
+  //     insertLine:
+  //       (attrs = {}) =>
+  //       ({ commands }) => {
+  //         const defaultAttrs = {
+  //           x: 100,
+  //           y: 100,
+  //           length: 150,
+  //           angle: 0,
+  //           strokeWidth: 2,
+  //           strokeColor: '#000',
+  //         }
 
-          return commands.insertContent({
-            type: this.name,
-            attrs: {
-              ...defaultAttrs,
-              ...attrs,
-            },
-          })
-        },
-    }
-  },
+  //         return commands.insertContent({
+  //           type: this.name,
+  //           attrs: {
+  //             ...defaultAttrs,
+  //             ...attrs,
+  //           },
+  //         })
+  //       },
+  //   }
+  // },
+  addCommands() {
+  return {
+    insertLine:
+      (attrs = {}) =>
+      ({ chain }) => {
+        const defaultAttrs = {
+          x: 100,
+          y: 100,
+          length: 150,
+          angle: 0,
+          strokeWidth: 2,
+          strokeColor: '#000',
+        }
+
+        // return chain()
+        //   .focus()
+        //   .insertContent([
+        //     { type: this.name, attrs: { ...defaultAttrs, ...attrs } },
+        //     { type: 'paragraph' }, // <-- This ensures next insert doesn't overwrite
+        //   ])
+        //   .run()
+        return chain()
+  .focus('end')  // <--- Force cursor to end of document
+  .insertContent([
+    { type: this.name, attrs },
+    { type: 'paragraph' },
+  ])
+  .run()
+
+      },
+  }
+}
+
 })
 
 export default Line
