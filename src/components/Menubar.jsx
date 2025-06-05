@@ -21,9 +21,10 @@ import {
 } from 'lucide-react' // make sure you have lucide-react installed
 import { TableGridSelector } from './TableGridSelector' // your custom table grid selector component
 
-export const MenuBar = ({ editor }) => {
+export const MenuBar = ({ editor,onStartDrawing }) => {
   const [showTableGrid, setShowTableGrid] = useState(false)
-     const [showShapeDropdown, setShowShapeDropdown] = useState(false)
+  const [showShapeDropdown, setShowShapeDropdown] = useState(false)
+
 
   const fileInputRef = useRef(null)
 
@@ -147,6 +148,17 @@ export const MenuBar = ({ editor }) => {
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
             }}
           >
+        
+             <button onClick={() => {onStartDrawing('rectangle');
+    setShowShapeDropdown(false)
+
+             }}>Draw Rectangle</button>
+      <button onClick={() => {onStartDrawing('circle');
+    setShowShapeDropdown(false)}}>Draw Circle</button>
+
+            <button onClick={() => {onStartDrawing('triangle');
+    setShowShapeDropdown(false)}}>Draw Triangle</button>
+
             <button onClick={() => insertShape('rectangle', 'Rectangle')}>🟥 Rectangle</button>
             <button onClick={() => insertShape('circle', 'Circle')}>⭕ Circle</button>
             <button onClick={() => insertShape('triangle', 'Triangle')}>🔺 Triangle</button>
