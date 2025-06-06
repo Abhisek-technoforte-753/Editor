@@ -20,10 +20,10 @@ import {
   Shapes,
 } from 'lucide-react' // make sure you have lucide-react installed
 import { TableGridSelector } from './TableGridSelector' // your custom table grid selector component
-
+import "./menubar.css" // import your CSS styles for the menu bar
 export const MenuBar = ({ editor }) => {
   const [showTableGrid, setShowTableGrid] = useState(false)
-     const [showShapeDropdown, setShowShapeDropdown] = useState(false)
+  const [showShapeDropdown, setShowShapeDropdown] = useState(false)
 
   const fileInputRef = useRef(null)
 
@@ -94,20 +94,6 @@ export const MenuBar = ({ editor }) => {
         Flowchart
       </button>
       {/* Shape insertion buttons */}
-      {/* <button onClick={() => editor.chain().focus().insertShape('rectangle', 'Rectangle').run()} type="button">
-        🟥
-      </button>
-      <button onClick={() => editor.chain().focus().insertShape('circle', 'Circle').run()} type="button">
-        ⭕
-      </button>
-      <button onClick={() => editor.chain().focus().insertShape('triangle', 'Triangle').run()} type="button">
-        🔺
-      </button>
-      <button onClick={() => editor.chain().focus().insertShape('parallelogram', 'Parallelogram').run()} type="button">▰</button>
-      <button onClick={() => editor.chain().focus().insertShape('terminator', 'Terminator').run()} type="button">🛑</button>
-      <button onClick={() => editor.chain().focus().insertShape('decision', 'Decision').run()} type="button">🔷</button> */}
-
-  {/* Shape Modal Trigger */}
       <div
       className="control-group"
       style={{

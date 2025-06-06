@@ -178,12 +178,12 @@
 }
 
 /* Image upload css */
-.ProseMirror img {
+/* .ProseMirror img {
   max-width: 100%;
   height: auto;
   border: 1px solid #ddd;
   border-radius: 4px;
-}
+} */
 
 
 
@@ -250,20 +250,18 @@
   transform: scale(0.98); /* 2% smaller as you requested */
   transform-origin: top center;
 }
-/* .editor-page div {
-  height: 500px;
-} */
+
 
 #editor-page {
-  height: 500px;
+  height: 100%;
   position: relative; /* needed for bounding children */
-  overflow: hidden;
+ 
 }
 
  /* Give the editor a flexible or fixed height */
 .editor-page .ProseMirror {
   min-height: 600px; /* or any value you want */
-  height: 100%;      /* or a fixed height if you want a fixed canvas */
+  height: 100%;      
   position: relative;
   background: #f8f9fa;
 }
