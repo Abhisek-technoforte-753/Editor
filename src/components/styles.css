@@ -140,7 +140,7 @@
   cursor: text;
   text-align: left;       
   display: block;
-  background-color: yellow;
+ 
 }
 
 
@@ -258,10 +258,12 @@
  
 }
 
+
  /* Give the editor a flexible or fixed height */
 .editor-page .ProseMirror {
   min-height: 600px; /* or any value you want */
-  height: 100%;      
+  height: 100%; 
+  padding-bottom: 30px;     
   position: relative;
   background: #f8f9fa;
 }

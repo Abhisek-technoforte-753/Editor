@@ -22,6 +22,7 @@ import Line from './Line.jsx'
 import ExportToWord from './ExportToWord.jsx'
 import ExportToPdf from './ExportToPdf.jsx'
 import SaveLoadControls from './EditorStorageHandler.jsx'
+import ExportToWordDoc from '../Dummy.jsx'
 
 // import { FlowChartNodeData } from '../extensions/FlowChartNodeData'
 
@@ -48,9 +49,7 @@ const Tiptap = () => {
       Image,
       Shape,
       Line,
-   
-   
-    ],
+      ],
     // content: `<p>Hello Tiptap!</p>`,
     content: savedJSON ? JSON.parse(savedJSON) : '<p>Hello Tiptap!</p>',
   })
@@ -63,6 +62,7 @@ const Tiptap = () => {
            {editor && <ExportToPdf  />}
            {editor && <ExportToWord editor={editor} />}
            {editor && <SaveLoadControls editor={editor} />}
+           {editor && <ExportToWordDoc editor={editor} />}
         </div>
         
       </div>

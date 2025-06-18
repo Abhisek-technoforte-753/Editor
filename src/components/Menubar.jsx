@@ -24,13 +24,39 @@ import "./menubar.css" // import your CSS styles for the menu bar
 export const MenuBar = ({ editor }) => {
   const [showTableGrid, setShowTableGrid] = useState(false)
   const [showShapeDropdown, setShowShapeDropdown] = useState(false)
-
+   const [tableAction, setTableAction] = useState('')
   const fileInputRef = useRef(null)
 
   if (!editor) {
     return null
   }
 
+   const handleTableAction = (action) => {
+    switch (action) {
+      case 'addColumnBefore':
+        editor.commands.addColumnBefore()
+        break
+      case 'addColumnAfter':
+        editor.commands.addColumnAfter()
+        break
+      case 'addRowBefore':
+        editor.commands.addRowBefore()
+        break
+      case 'addRowAfter':
+        editor.commands.addRowAfter()
+        break
+      case 'deleteRow':
+        editor.commands.deleteRow()
+        break
+      case 'deleteColumn':
+        editor.commands.deleteColumn()
+        break
+      default:
+        break
+    }
+
+    setTableAction('') // reset dropdown after selection
+  }
 
   const insertTable = (rows, cols) => {
     editor.chain().focus().insertTable({ rows, cols, withHeaderRow: true }).run()
@@ -142,8 +168,52 @@ export const MenuBar = ({ editor }) => {
           </div>
         )}
       </div>
+      <div>
+        {/* {editor.isActive('table') && (
+        <div style={{ marginTop: '10px', display: 'flex', gap: '8px' }}>
+          <button onClick={() => editor.commands.addColumnBefore()}>
+            ➕ Add Column Before
+          </button>
+          <button onClick={() => editor.commands.addColumnAfter()}>
+            ➕ Add Column After
+          </button>
+          <button onClick={() => editor.commands.addRowBefore()}>
+            ➕ Add Row Above
+          </button>
+          <button onClick={() => editor.commands.addRowAfter()}>
+            ➕ Add Row Below
+          </button>
+          <button onClick={() => editor.commands.deleteRow()}>
+            ❌ Delete Row
+          </button>
+          <button onClick={() => editor.commands.deleteColumn()}>
+            ❌ Delete Column
+          </button>
+        </div>
+      )} */}
+     
+      </div>
+      
     </div>
-
+      <div>
+         {/* {editor.isActive('table') && ( */}
+        <div style={{height:"100%" }}>
+          <select
+          className='table-action-select'
+            value={tableAction}
+            onChange={(e) => handleTableAction(e.target.value)}
+          >
+            <option value="">-- Table Actions --</option>
+            <option value="addColumnBefore">➕ Add Column Before</option>
+            <option value="addColumnAfter">➕ Add Column After</option>
+            <option value="addRowBefore">➕ Add Row Above</option>
+            <option value="addRowAfter">➕ Add Row Below</option>
+            <option value="deleteRow">❌ Delete Row</option>
+            <option value="deleteColumn">❌ Delete Column</option>
+          </select>
+        </div>
+      {/* )} */}
+      </div>
       <button onClick={() => editor
         .chain()
         .focus()
