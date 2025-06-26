@@ -4,10 +4,45 @@ import React, { useEffect, useState } from 'react'
 const ExportToWordDoc = ({ editor }) => {
   const [loading, setLoading] = useState(false)
 
- const handleExport = async () => {
+//  const handleExport = async () => {
+//   const json = editor.getJSON();
+//   setLoading(true);
+
+//   try {
+//     const response = await fetch('https://localhost:7119/api/ExportWordTipTap/generate', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(json),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error('Failed to generate Word document');
+//     }
+//      console.log('Response:', response);
+//     const blob = await response.blob(); // ✅ This is correct
+//     const url = window.URL.createObjectURL(blob);
+
+//     const link = document.createElement('a');
+//     link.href = url;
+//     link.download = 'TipTapContent.docx';
+//     document.body.appendChild(link);
+//     link.click();
+//     link.remove();
+//     window.URL.revokeObjectURL(url);
+//   } catch (error) {
+//     console.error('Export to Word error:', error);
+//     alert('Something went wrong while exporting to Word.');
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+const handleExport = async () => {
   const json = editor.getJSON();
   setLoading(true);
-
+console.log('Exporting JSON:', json);
   try {
     const response = await fetch('https://localhost:7119/api/ExportWordTipTap/generate', {
       method: 'POST',
@@ -18,33 +53,38 @@ const ExportToWordDoc = ({ editor }) => {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to generate Word document');
+      throw new Error(`Failed to generate Word document: ${response.statusText}`);
     }
-     console.log('Response:', response);
-    const blob = await response.blob(); // ✅ This is correct
-    const url = window.URL.createObjectURL(blob);
 
+    const blob = await response.blob();
+
+    // if (blob.size === 0) {
+    //   throw new Error("Downloaded file is empty");
+    // }
+
+    const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
     link.download = 'TipTapContent.docx';
     document.body.appendChild(link);
     link.click();
-    link.remove();
+    document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
   } catch (error) {
     console.error('Export to Word error:', error);
-    alert('Something went wrong while exporting to Word.');
+    alert(error.message);
   } finally {
     setLoading(false);
   }
 };
 
 
+
   const fetchData=()=>{
     fetch('https://localhost:7119/api/ExportWordTipTap/dummy')
       .then(response => response.json())
       .then(data => {
-        console.log('Data fetched:', data)
+        // console.log('Data fetched:', data)
       })
       .catch(error => {
         console.error('Error fetching data:', error)

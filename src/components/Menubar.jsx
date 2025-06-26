@@ -143,21 +143,8 @@ export const MenuBar = ({ editor }) => {
         </button>
 
         {showShapeDropdown && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '40px',
-              left: 0,
-              background: '#fff',
-              border: '1px solid #ccc',
-              borderRadius: '6px',
-              padding: '10px',
-              zIndex: 1000,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            }}
+          <div style={{height:"100%" }}
+           
           >
             <button onClick={() => insertShape('rectangle', 'Rectangle')}>🟥 Rectangle</button>
             <button onClick={() => insertShape('circle', 'Circle')}>⭕ Circle</button>
@@ -168,31 +155,7 @@ export const MenuBar = ({ editor }) => {
           </div>
         )}
       </div>
-      <div>
-        {/* {editor.isActive('table') && (
-        <div style={{ marginTop: '10px', display: 'flex', gap: '8px' }}>
-          <button onClick={() => editor.commands.addColumnBefore()}>
-            ➕ Add Column Before
-          </button>
-          <button onClick={() => editor.commands.addColumnAfter()}>
-            ➕ Add Column After
-          </button>
-          <button onClick={() => editor.commands.addRowBefore()}>
-            ➕ Add Row Above
-          </button>
-          <button onClick={() => editor.commands.addRowAfter()}>
-            ➕ Add Row Below
-          </button>
-          <button onClick={() => editor.commands.deleteRow()}>
-            ❌ Delete Row
-          </button>
-          <button onClick={() => editor.commands.deleteColumn()}>
-            ❌ Delete Column
-          </button>
-        </div>
-      )} */}
-     
-      </div>
+      
       
     </div>
       <div>
